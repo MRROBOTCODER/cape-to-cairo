@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cape to Cairo — South African Shop in Australia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600&family=Kalam:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+<div class="grain"></div>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <span class="topbar-text">📞 (08) 9204 5666 &nbsp;|&nbsp; 🔒 Safe & Secure Checkout &nbsp;|&nbsp; 🚚 Free delivery on orders over $80</span>
+  <div class="topbar-user" id="topbar-user"></div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo" onclick="showPage('shop')">
+      <svg class="logo-africa" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 C30 5 15 15 10 30 C5 45 8 55 12 65 C16 75 14 85 20 95 C26 105 38 115 50 115 C62 115 74 105 80 95 C86 85 84 75 88 65 C92 55 95 45 90 30 C85 15 70 5 50 5Z" fill="#c9943a"/>
+        <path d="M50 10 C32 10 18 19 13 33 C8 47 11 56 15 66 C19 76 17 86 23 96 C29 106 40 114 50 114 C60 114 71 106 77 96 C83 86 81 76 85 66 C89 56 92 47 87 33 C82 19 68 10 50 10Z" fill="none" stroke="#8b5e3c" stroke-width="1.5"/>
+      </svg>
+      <div>
+        <span class="logo-main">Cape to Cairo</span>
+        <span class="logo-sub">South African Shop · Perth, Australia</span>
+      </div>
+    </div>
+    <nav class="nav">
+      <button class="nav-link active" onclick="showPage('shop')">Shop</button>
+      <button class="nav-link" onclick="showPage('promotions')">Specials</button>
+      <button class="nav-link" onclick="showPage('contact')">Contact</button>
+      <button class="nav-link" onclick="showPage('rewards')">🎡 Rewards</button>
+      <button class="nav-link" onclick="openAuth('login')" id="nav-signin">Sign In</button>
+      <button class="cart-btn" onclick="toggleCart()">
+        🧺 Cart <span class="cart-badge" id="cart-badge" style="display:none">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<!-- ══════════ SHOP PAGE ══════════ -->
+<div id="page-shop">
+  <section class="hero">
+    <div class="hero-fence"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">Proudly South African · Perth, WA</p>
+      <h1 class="hero-title">A Taste of <em>Home</em>,<br/>Delivered to You</h1>
+      <p class="hero-desc">Biltong, braai essentials, pantry staples and gifts — sourced straight from South Africa and delivered across Australia.</p>
+      <div class="hero-btns">
+        <button class="hero-btn-primary" onclick="scrollToShop()">Shop Now →</button>
+        <button class="hero-btn-secondary" onclick="showPage('promotions')">View Specials</button>
+      </div>
+    </div>
+    <div class="hero-deco">
+      <span class="deco-item" style="top:15%;left:6%;font-size:3.5rem;transform:rotate(-12deg)">🥩</span>
+      <span class="deco-item" style="top:62%;left:4%;font-size:2rem;transform:rotate(8deg)">🫙</span>
+      <span class="deco-item" style="top:18%;right:6%;font-size:3rem;transform:rotate(10deg)">🍵</span>
+      <span class="deco-item" style="top:65%;right:8%;font-size:2.5rem;transform:rotate(-6deg)">🔥</span>
+      <span class="deco-item" style="top:78%;left:22%;font-size:2rem;transform:rotate(5deg)">🎁</span>
+    </div>
+  </section>
+
+  <!-- QUICK CATEGORY TILES -->
+  <section class="quick-cats">
+    <div class="quick-cats-inner">
+      <div class="quick-cat" onclick="filterCategory('Biltong &amp; Jerky')"><span class="qc-icon">🥩</span><span>Biltong &amp; Jerky</span></div>
+      <div class="quick-cat" onclick="filterCategory('Groceries')"><span class="qc-icon">🛒</span><span>Groceries</span></div>
+      <div class="quick-cat" onclick="filterCategory('BBQ &amp; Braai')"><span class="qc-icon">🔥</span><span>BBQ &amp; Braai</span></div>
+      <div class="quick-cat" onclick="filterCategory('Biltong Making')"><span class="qc-icon">🫙</span><span>Biltong Making</span></div>
+      <div class="quick-cat" onclick="filterCategory('Potjies')"><span class="qc-icon">🥘</span><span>Potjies</span></div>
+      <div class="quick-cat" onclick="filterCategory('Gifts &amp; Crafts')"><span class="qc-icon">🎁</span><span>Gifts &amp; Crafts</span></div>
+    </div>
+  </section>
+
+  <main class="main" id="shop">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">⌕</span>
+        <input type="text" id="search-input" placeholder="Search products…" oninput="onSearch()" autocomplete="off" />
+      </div>
+      <div class="filters" id="filters">
+        {% for cat in categories %}
+        <button class="filter-chip {% if cat == 'All' %}active{% endif %}" onclick="selectCategory('{{ cat }}', this)" data-cat="{{ cat }}">{{ cat }}</button>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="section-bar">
+      <div class="section-label" id="section-label">All Products</div>
+      <div class="section-divider"></div>
+    </div>
+    <div class="product-grid" id="product-grid"></div>
+  </main>
+</div>
+
+<!-- ══════════ PROMOTIONS PAGE ══════════ -->
+<div id="page-promotions" style="display:none">
+  <div class="page-hero">
+    <div class="hero-fence"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">Limited Time Deals</p>
+      <h1 class="hero-title">This Month's <em>Specials</em></h1>
+      <p class="hero-desc">Don't miss out on our current deals — stocking up has never tasted better.</p>
+    </div>
+  </div>
+  <div class="main">
+    <div class="promos-grid">
+      {% for promo in promotions %}
+      <div class="promo-card" style="border-top-color:{{ promo.colour }}">
+        <div class="promo-badge" style="background:{{ promo.colour }}">{{ promo.badge }}</div>
+        <h3 class="promo-title">{{ promo.title }}</h3>
+        <p class="promo-desc">{{ promo.description }}</p>
+        <button class="promo-btn" onclick="showPage('shop')" style="background:{{ promo.colour }}">Shop Now →</button>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="section-bar" style="margin-top:2.5rem">
+      <div class="section-label">Featured Products</div>
+      <div class="section-divider"></div>
+    </div>
+    <div class="product-grid" id="promo-product-grid"></div>
+  </div>
+</div>
+
+<!-- ══════════ CONTACT PAGE ══════════ -->
+<div id="page-contact" style="display:none">
+  <div class="page-hero">
+    <div class="hero-fence"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">We'd love to hear from you</p>
+      <h1 class="hero-title">Get in <em>Touch</em></h1>
+      <p class="hero-desc">Visit us in store or reach out online — we're always happy to help.</p>
+    </div>
+  </div>
+  <div class="main">
+    <div class="contact-grid">
+      <div class="contact-card"><div class="contact-icon">📍</div><h3>Visit Our Store</h3><p>Perth, Western Australia<br/>Come in and browse our full range in person.</p></div>
+      <div class="contact-card"><div class="contact-icon">📞</div><h3>Call Us</h3><p><strong>(08) 9204 5666</strong><br/>Mon–Fri: 9am – 5pm AWST<br/>Sat: 9am – 2pm</p></div>
+      <div class="contact-card"><div class="contact-icon">🕐</div><h3>Trading Hours</h3><p>Monday – Friday: 9:00am – 5:00pm<br/>Saturday: 9:00am – 2:00pm<br/>Sunday: Closed</p></div>
+      <div class="contact-card"><div class="contact-icon">📘</div><h3>Follow Us</h3><p>Stay up to date with new products and braai inspiration on Facebook.</p><a class="fb-link" href="https://www.facebook.com/CapetoCairoShop/" target="_blank">Cape to Cairo on Facebook →</a></div>
+    </div>
+    <div class="contact-form-wrap">
+      <div class="section-bar" style="margin-bottom:1.5rem"><div class="section-label">Send Us a Message</div><div class="section-divider"></div></div>
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group"><label>Your Name</label><input type="text" id="cf-name" placeholder="John Smith" /></div>
+          <div class="form-group"><label>Email Address</label><input type="email" id="cf-email" placeholder="john@example.com" /></div>
+        </div>
+        <div class="form-group"><label>Subject</label><input type="text" id="cf-subject" placeholder="Order enquiry, product question…" /></div>
+        <div class="form-group"><label>Message</label><textarea id="cf-message" rows="5" placeholder="How can we help you?"></textarea></div>
+        <button class="submit-btn" onclick="submitContact()">Send Message →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ REWARDS PAGE ══════════ -->
+<div id="page-rewards" style="display:none">
+  <div class="page-hero">
+    <div class="hero-fence"></div>
+    <div class="hero-content">
+      <p class="hero-kicker">Loyalty Rewards</p>
+      <h1 class="hero-title">Spin to <em>Win!</em></h1>
+      <p class="hero-desc">Sign in and spin the wheel once a day for a chance to win discount codes and mystery gifts!</p>
+    </div>
+  </div>
+  <div class="main">
+
+    <!-- Not signed in -->
+    <div id="rewards-signin-prompt" style="display:none">
+      <div class="rewards-prompt-box">
+        <div style="font-size:3rem;margin-bottom:1rem">🎡</div>
+        <h2>Sign In to Spin</h2>
+        <p>You need to be signed in to play the daily spin wheel and win prizes!</p>
+        <button class="hero-btn-primary" style="margin-top:1.25rem" onclick="openAuth('login')">Sign In to Play</button>
+      </div>
+    </div>
+
+    <!-- Signed in -->
+    <div id="rewards-main" style="display:none">
+      <div class="rewards-layout">
+
+        <!-- WHEEL COLUMN -->
+        <div class="wheel-section">
+          <div class="wheel-wrap">
+            <div class="wheel-pointer">&#9660;</div>
+            <canvas id="spin-canvas" width="360" height="360"></canvas>
+          </div>
+          <button class="spin-btn" id="spin-btn" onclick="doSpin()">🎡 Spin the Wheel!</button>
+          <p class="spin-note" id="spin-note">You can spin once per day.</p>
+        </div>
+
+        <!-- PRIZES COLUMN -->
+        <div class="prizes-section">
+          <div class="section-bar">
+            <div class="section-label">My Prizes</div>
+            <div class="section-divider"></div>
+          </div>
+          <div id="my-prizes-list">
+            <p class="no-prizes">No prizes yet — give it a spin! 🤞</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- WIN MODAL -->
+    <div class="win-overlay" id="win-overlay"></div>
+    <div class="win-modal" id="win-modal">
+      <div class="win-emoji" id="win-emoji">🎉</div>
+      <h2 class="win-title" id="win-title">You Won!</h2>
+      <p class="win-desc" id="win-desc"></p>
+      <div class="win-code-wrap" id="win-code-wrap" style="display:none">
+        <p class="win-code-label">Your Discount Code:</p>
+        <div class="win-code" id="win-code"></div>
+        <button class="copy-btn" onclick="copyCode()">📋 Copy Code</button>
+      </div>
+      <button class="win-close-btn" onclick="closeWinModal()">Awesome, thanks!</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg class="footer-africa" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M50 5 C30 5 15 15 10 30 C5 45 8 55 12 65 C16 75 14 85 20 95 C26 105 38 115 50 115 C62 115 74 105 80 95 C86 85 84 75 88 65 C92 55 95 45 90 30 C85 15 70 5 50 5Z" fill="#c9943a" opacity="0.5"/>
+      </svg>
+      <div>
+        <div class="footer-name">Cape to Cairo</div>
+        <div class="footer-tagline">South African Shop · Perth, Australia</div>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <div class="footer-col-title">My Account</div>
+        <a onclick="openAuth('login')">Login</a>
+        <a onclick="openAuth('signup')">Register</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Quick Links</div>
+        <a onclick="showPage('shop')">Shop</a>
+        <a onclick="showPage('promotions')">Specials</a>
+        <a onclick="showPage('contact')">Contact Us</a>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">About</div>
+        <a href="https://www.capetocairo.com.au/about-us/" target="_blank">About Us</a>
+        <a href="https://www.capetocairo.com.au/terms-and-conditions/" target="_blank">Terms & Conditions</a>
+        <a href="https://www.capetocairo.com.au/privacy-policy/" target="_blank">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Cape to Cairo. All Rights Reserved.</span>
+    <span>💳 Visa · Mastercard · PayPal</span>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="overlay" id="cart-overlay" onclick="toggleCart()"></div>
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="drawer-header"><h2>🧺 Your Cart</h2><button class="drawer-close" onclick="toggleCart()">✕</button></div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty" id="cart-empty"><div style="font-size:3rem;margin-bottom:.5rem">🧺</div><p>Your cart is empty.<br/>Start browsing!</p></div>
+  </div>
+  <div class="cart-footer" id="cart-footer" style="display:none">
+    <div class="cart-total"><span>Total (AUD)</span><span id="cart-total-amount">$0.00</span></div>
+    <button class="checkout-btn" onclick="checkout()">Place Order →</button>
+  </div>
+</aside>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeAuth()"></div>
+<div class="modal" id="auth-modal">
+  <button class="modal-x" onclick="closeAuth()">✕</button>
+  <div class="modal-brand">🌍 Cape to Cairo</div>
+  <h2 class="modal-title" id="modal-title">Welcome Back</h2>
+  <p class="modal-sub" id="modal-sub">Sign in to your account</p>
+  <div class="form-group" id="name-group" style="display:none"><label>Full Name</label><input type="text" id="inp-name" placeholder="Your name" /></div>
+  <div class="form-group"><label>Email Address</label><input type="email" id="inp-email" placeholder="you@example.com" /></div>
+  <div class="form-group"><label>Password</label><input type="password" id="inp-pass" placeholder="••••••••" /></div>
+  <button class="modal-submit" id="modal-submit" onclick="submitAuth()">Sign In</button>
+  <p class="modal-toggle" id="modal-toggle">Don't have an account? <button onclick="toggleAuthMode()">Sign Up</button></p>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="success-banner" id="success-banner" style="display:none"></div>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
